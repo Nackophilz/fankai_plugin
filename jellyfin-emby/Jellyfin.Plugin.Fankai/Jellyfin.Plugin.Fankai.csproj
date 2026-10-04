@@ -4,9 +4,9 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>3.1.0</AssemblyVersion>
-    <FileVersion>3.1.0</FileVersion>
-    <Version>3.1.0</Version>
+    <AssemblyVersion>3.1.1</AssemblyVersion>
+    <FileVersion>3.1.1</FileVersion>
+    <Version>3.1.1</Version>
     <Description>Fournit des métadonnées depuis l'API Fankai.</Description>
     <AssemblyName>Jellyfin.Plugin.Fankai</AssemblyName>
     <PluginName>$(AssemblyName)</PluginName>
@@ -16,7 +16,10 @@
     <Configurations>Debug;Release;Jellyfin;Jellyfin12;Emby</Configurations>
   </PropertyGroup>
 
+  <!-- Emby pour macOS tourne encore sur le runtime .NET 6, qui refuse une DLL net8.0. -->
   <PropertyGroup Condition="'$(Configuration)' == 'Emby'">
+    <TargetFramework>net6.0</TargetFramework>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <DefineConstants>$(DefineConstants);__EMBY__</DefineConstants>
     <OutputPath>bin/Emby</OutputPath>
   </PropertyGroup>

@@ -202,14 +202,15 @@ public class SeriesProvider : IRemoteMetadataProvider<Series, SeriesInfo>, IHasO
             Tagline = serieData.Tagline,
             Status = ParseSeriesStatus(serieData.Status),
 #if __EMBY__
+            // Pas de DisplayOrder : Emby le traite comme un réglage utilisateur (CopyMetadataSettings écrase la valeur
+            // du provider), et son type passe de l'enum SeriesDisplayOrder à string en 4.11 (MissingMethodException).
             SortName = serieData.SortTitle,
-            DisplayOrder = serieData.OriginalTitle?.Contains("One piece", StringComparison.OrdinalIgnoreCase) == true 
-                ? MediaBrowser.Model.Entities.SeriesDisplayOrder.Absolute 
-                : MediaBrowser.Model.Entities.SeriesDisplayOrder.Aired,
 #else
             ForcedSortName = serieData.SortTitle,
-            DisplayOrder = serieData.OriginalTitle?.Contains("One piece", StringComparison.OrdinalIgnoreCase) == true 
-                ? "absolute" 
+            // Le titre original renvoyé par l'API est en japonais (ワンピース) : seul le titre français contient "One Piece".
+            DisplayOrder = serieData.Title?.Contains("One piece", StringComparison.OrdinalIgnoreCase) == true
+                || serieData.OriginalTitle?.Contains("One piece", StringComparison.OrdinalIgnoreCase) == true
+                ? "absolute"
                 : "",
 #endif
         };
@@ -403,7 +404,7 @@ public class SeriesProvider : IRemoteMetadataProvider<Series, SeriesInfo>, IHasO
 
         process.Start();
 
-        string errorOutput = await process.StandardError.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+        string errorOutput = await process.StandardError.ReadToEndAsync().ConfigureAwait(false);
 
         await process.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
 
