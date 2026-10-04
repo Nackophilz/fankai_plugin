@@ -8,7 +8,7 @@ _Les métadonnées ultimes pour la communauté Kaï._
 
 [![.NET Version](https://img.shields.io/badge/.NET-8.0%20%7C%2010.0-512BD4.svg?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Jellyfin](https://img.shields.io/badge/Jellyfin-10.9%2B%20%7C%2012-00A4DC?logo=jellyfin)](https://jellyfin.org/)
-[![Emby](https://img.shields.io/badge/Emby-4.8%2B-52B54B?logo=emby)](https://emby.media/)
+[![Emby](https://img.shields.io/badge/Emby-4.9%2B-52B54B?logo=emby)](https://emby.media/)
 [![Kodi](https://img.shields.io/badge/Kodi-20%2B-17B2E7?logo=kodi)](https://kodi.tv/)
 [![Téléchargements](https://img.shields.io/github/downloads/Nackophilz/fankai_plugin/total?label=t%C3%A9l%C3%A9chargements)](https://github.com/Nackophilz/fankai_plugin/releases)
 [![License](https://img.shields.io/github/license/Nackophilz/fankai_plugin)](LICENSE)
@@ -32,7 +32,7 @@ Ce plugin n'est pas qu'un simple scraper. Il intègre des algorithmes avancés p
 
 ## 🚀 Installation
 
-Le plugin tourne nativement sur Jellyfin et Emby (une build **.NET 8** pour Jellyfin 10.9+ et Emby, une build **.NET 10** pour Jellyfin 12). Kodi dispose de son propre add-on, en Python, alimenté par la même API.
+Le plugin tourne nativement sur Jellyfin et Emby (une build **.NET 8** pour Jellyfin 10.9+, une build **.NET 10** pour Jellyfin 12, une build **.NET 6** pour Emby 4.9+, qui tourne encore sur ce runtime sous macOS). Kodi dispose de son propre add-on, en Python, alimenté par la même API.
 
 ### 🔵 Pour Jellyfin (v10.9.0 ou supérieure, y compris 12.x)
 
@@ -47,17 +47,20 @@ L'installation est entièrement automatisée via le système de dépôt Jellyfin
 4. **Redémarrez** votre serveur Jellyfin.
 > _💡 Les mises à jour futures se feront automatiquement via l'interface Jellyfin. Le dépôt est le même pour toutes les versions : Jellyfin 10.x reçoit les versions 3.x, Jellyfin 12 les versions 4.x._
 
-### 🟢 Pour Emby (v4.8.0 ou supérieure)
+### 🟢 Pour Emby (v4.9.0 ou supérieure)
 
 Le plugin nécessite une installation manuelle (Emby n'ayant pas de catalogue communautaire ouvert de la même manière).
 
 1. Allez sur notre page [**Releases**](https://github.com/Nackophilz/fankai_plugin/releases).
-2. Téléchargez le fichier `Jellyfin.Plugin.Fankai.Emby.zip`.
-3. Décompressez l'archive et placez la `.dll` dans le dossier `plugins` de votre serveur Emby :
+2. Téléchargez le fichier `Jellyfin.Plugin.Fankai.Emby.zip` (**et pas** `Jellyfin.Plugin.Fankai.zip` ni `Jellyfin.Plugin.Fankai.Jellyfin12.zip`, qui sont les builds Jellyfin).
+3. Décompressez l'archive et placez la `.dll` dans le dossier `plugins` de votre serveur Emby, en remplaçant l'éventuelle version précédente :
    * **Windows :** `C:\ProgramData\Emby-Server\plugins`
    * **Linux / Docker :** `/config/plugins` ou `/var/lib/emby/plugins`
+   * **macOS :** `~/.config/emby-server/plugins`
 4. **Redémarrez** Emby.
 5. Allez dans **Dashboard** ➔ **Plugins** pour vérifier qu'il est bien actif.
+
+> _⚠️ Les trois archives contiennent une DLL du même nom. Si **Fankai** n'apparaît ni dans la liste des plugins ni dans les fournisseurs de métadonnées de la bibliothèque alors que les logs montrent `Loading Jellyfin.Plugin.Fankai…`, c'est la build Jellyfin qui a été installée : Emby l'ignore, avec un `ReflectionTypeLoadException` sur `MediaBrowser.Controller, Version=10.9.11.0` juste après dans les logs. Remplacez-la par celle de `Jellyfin.Plugin.Fankai.Emby.zip`._
 
 ### 🟠 Pour Kodi (v20 Nexus ou supérieure)
 

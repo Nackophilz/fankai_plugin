@@ -194,6 +194,8 @@ jobs:
           body: |
             ${{ steps.meta.outputs.CHANGELOG }}
             ---
+            **Emby** : prendre `Jellyfin.Plugin.Fankai.Emby.zip`. Les deux autres archives sont les builds Jellyfin (10.9+ et 12), qu'Emby ignore sans rien afficher.
+
             ### Checksums (MD5)
             - **Jellyfin 10.9+** (v${{ steps.get_version.outputs.PLUGIN_VERSION }}): `${{ steps.meta.outputs.JF_CHECKSUM }}`
             - **Jellyfin 12+** (v${{ steps.get_version.outputs.PLUGIN_VERSION_JF12 }}): `${{ steps.meta.outputs.JF12_CHECKSUM }}`
@@ -256,7 +258,7 @@ jobs:
           fi
 
           # --- EMBY ---
-          ABI_EMBY="4.8.0.0"
+          ABI_EMBY="4.9.0.0"
           ZIP_EMBY_NAME="${{ steps.zip_emby.outputs.ZIP_NAME }}"
           SUM_EMBY="${{ steps.meta.outputs.EMBY_CHECKSUM }}"
           URL_EMBY="https://github.com/$REPO/releases/download/v$VERSION/$ZIP_EMBY_NAME"
