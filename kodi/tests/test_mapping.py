@@ -184,6 +184,16 @@ def test_fill_search_item():
     assert tag.artwork[0]['arttype'] == 'poster'
 
 
+def test_ids_externes_de_l_api_ignores():
+    series = dict(load_fixture('series_53.json'), ids={'imdb': 'tt0388629', 'tmdb': '37854', 'tvdb': '81797'})
+    li = xbmcgui.ListItem(offscreen=True)
+    mapping.fill_search_item(li, series)
+    assert li.getVideoInfoTag().unique_ids == {'fankai': '53'}
+    tag = xbmcgui.ListItem(offscreen=True).getVideoInfoTag()
+    mapping.fill_show_tag(tag, series, [], [], Settings())
+    assert tag.unique_ids == {'fankai': '53'}
+
+
 def test_fill_episode_tag():
     envelope = load_fixture('seasons_110_episodes.json')
     episode = envelope['episodes'][0]

@@ -94,12 +94,10 @@ def make_actor(actor: Dict[str, Any], order: int) -> xbmc.Actor:
                       str(actor.get('thumb_url') or ''))
 
 
-def unique_ids(series: Dict[str, Any], fankai_id: Any) -> Dict[str, str]:
-    ids = {UNIQUE_ID_TYPE: str(fankai_id)}
-    for name, value in (series.get('ids') or {}).items():
-        if value not in (None, '', 'NULL', 'null'):
-            ids[str(name)] = str(value)
-    return ids
+def unique_ids(fankai_id: Any) -> Dict[str, str]:
+    # Les `ids` imdb/tmdb/tvdb de l'API désignent l'anime d'origine, pas le Kaï : les exposer laisserait
+    # Kodi (ou un add-on de synchro) rattacher la série à l'œuvre officielle.
+    return {UNIQUE_ID_TYPE: str(fankai_id)}
 
 
 def set_rating(tag: Any, item: Dict[str, Any]) -> None:
@@ -131,7 +129,7 @@ def fill_search_item(li: Any, series: Dict[str, Any]) -> None:
     if year:
         tag.setYear(year)
     tag.setMediaType('tvshow')
-    tag.setUniqueIDs(unique_ids(series, series.get('id')), UNIQUE_ID_TYPE)
+    tag.setUniqueIDs(unique_ids(series.get('id')), UNIQUE_ID_TYPE)
     poster = (series.get('images') or {}).get('poster') or series.get('poster_image')
     if poster:
         tag.addAvailableArtwork(poster, 'poster', preview=poster)
@@ -182,7 +180,7 @@ def fill_show_tag(tag: Any, series: Dict[str, Any], seasons: List[Dict[str, Any]
     set_rating(tag, series)
 
     fankai_id = series.get('id')
-    tag.setUniqueIDs(unique_ids(series, fankai_id), UNIQUE_ID_TYPE)
+    tag.setUniqueIDs(unique_ids(fankai_id), UNIQUE_ID_TYPE)
     tag.setEpisodeGuide(encode_show_url(fankai_id, series.get('title'), year))
 
     cast = [make_actor(a, i) for i, a in enumerate(order_cast(actors)) if a.get('name')]

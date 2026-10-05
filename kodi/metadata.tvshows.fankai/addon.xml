@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="metadata.tvshows.fankai" name="Fankai" version="1.0.1" provider-name="Nackophilz">
+<addon id="metadata.tvshows.fankai" name="Fankai" version="1.0.2" provider-name="Nackophilz">
   <requires>
     <import addon="xbmc.python" version="3.0.1"/>
     <import addon="xbmc.metadata" version="2.1.0"/>
@@ -15,7 +15,10 @@
     <license>MIT</license>
     <source>https://github.com/Nackophilz/fankai_plugin</source>
     <website>https://fankai.fr</website>
-    <news>1.0.1
+    <news>1.0.2
+- Les IDs TMDB/IMDb/TVDB de l'API ne sont plus transmis à Kodi : ils désignent l'anime d'origine et pouvaient rattacher la série à l'œuvre officielle. Actualiser les séries déjà scrapées pour les retirer
+
+1.0.1
 - Le dépôt déménage sur https://nackophilz.github.io/fankai_plugin/
 
 1.0.0
