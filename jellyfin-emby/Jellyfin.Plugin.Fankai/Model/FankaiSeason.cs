@@ -38,15 +38,6 @@ public class FankaiSeason
     [JsonPropertyName("year")]
     public int? Year { get; set; }
 
-    [JsonPropertyName("imdb_id")]
-    public string? ImdbId { get; set; }
-
-    [JsonPropertyName("tmdb_id")]
-    public string? TmdbId { get; set; }
-
-    [JsonPropertyName("tvdb_id")]
-    public string? TvdbId { get; set; }
-
     // Champs additionnels de l'endpoint /series/{serie_id}/seasons
     [JsonPropertyName("serie_title")]
     public string? SerieTitle { get; set; }

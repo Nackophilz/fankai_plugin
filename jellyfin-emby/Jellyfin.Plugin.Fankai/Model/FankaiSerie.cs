@@ -78,15 +78,6 @@ public class FankaiSerie
     [JsonPropertyName("tagline")]
     public string? Tagline { get; set; }
 
-    [JsonPropertyName("imdb_id")]
-    public string? ImdbId { get; set; }
-
-    [JsonPropertyName("tmdb_id")]
-    public string? TmdbId { get; set; }
-
-    [JsonPropertyName("tvdb_id")]
-    public string? TvdbId { get; set; }
-
     [JsonPropertyName("statistics")]
     public SerieStatistics? Statistics { get; set; }
 

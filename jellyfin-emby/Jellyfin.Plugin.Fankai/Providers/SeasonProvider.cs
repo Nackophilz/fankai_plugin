@@ -185,32 +185,9 @@ public class SeasonProvider : IRemoteMetadataProvider<Season, SeasonInfo>, IHasO
             result.Item.ProductionYear = premiereDate.Year;
         }
 
-        // 5. Stocker les IDs de fournisseurs (Fankai, IMDb, TMDB, TVDB).
-        // CORRECTION : Utilisation de l'indexeur '[]' pour garantir que les IDs sont définis (ajoutés ou écrasés).
+        // Seul l'ID Fankai est exposé : les IDs externes de l'API désignent la saison de l'anime d'origine.
         result.Item.ProviderIds[ProviderIdName] = matchedSeason.Id.ToString(CultureInfo.InvariantCulture);
-        if (!string.IsNullOrWhiteSpace(matchedSeason.ImdbId)) {
-#if __EMBY__
-             result.Item.SetProviderId("Imdb", matchedSeason.ImdbId);
-#else
-             result.Item.SetProviderId(MetadataProvider.Imdb, matchedSeason.ImdbId);
-#endif
-        }
-        if (!string.IsNullOrWhiteSpace(matchedSeason.TmdbId)) {
-#if __EMBY__
-            result.Item.SetProviderId("Tmdb", matchedSeason.TmdbId);
-#else
-            result.Item.SetProviderId(MetadataProvider.Tmdb, matchedSeason.TmdbId);
-#endif
-        }
-        if (!string.IsNullOrWhiteSpace(matchedSeason.TvdbId))
-        {
-#if __EMBY__
-            result.Item.SetProviderId("Tvdb", matchedSeason.TvdbId);
-#else
-            result.Item.SetProviderId(MetadataProvider.Tvdb, matchedSeason.TvdbId);
-#endif
-        }
-        
+
         result.HasMetadata = true;
         return result;
     }

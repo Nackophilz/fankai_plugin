@@ -182,13 +182,6 @@ public class SeriesProvider : IRemoteMetadataProvider<Series, SeriesInfo>, IHasO
             return result;
         }
 
-        LogInfo(
-            "Données Fankai reçues pour ID {0}: ImdbId='{1}', TmdbId='{2}', TvdbId='{3}'",
-            fankaiId,
-            serieData.ImdbId ?? "null",
-            serieData.TmdbId ?? "null",
-            serieData.TvdbId ?? "null");
-
         result.Item = new Series 
         {
             Name = serieData.Title,
@@ -215,28 +208,9 @@ public class SeriesProvider : IRemoteMetadataProvider<Series, SeriesInfo>, IHasO
 #endif
         };
         
+        // Les IDs IMDb/TMDB/TVDB de l'API désignent l'anime d'origine, pas le Kaï : les exposer laisserait les autres
+        // fournisseurs (TMDB, TVDB…) rattacher la série à l'œuvre officielle et écraser ses métadonnées.
         result.Item.SetProviderId(ProviderIdName, fankaiId);
-        if (!string.IsNullOrWhiteSpace(serieData.ImdbId)) {
-#if __EMBY__
-            result.Item.SetProviderId("Imdb", serieData.ImdbId);
-#else
-            result.Item.SetProviderId(MetadataProvider.Imdb, serieData.ImdbId);
-#endif
-        }
-        if (!string.IsNullOrWhiteSpace(serieData.TmdbId)) {
-#if __EMBY__
-            result.Item.SetProviderId("Tmdb", serieData.TmdbId);
-#else
-            result.Item.SetProviderId(MetadataProvider.Tmdb, serieData.TmdbId);
-#endif
-        }
-        if (!string.IsNullOrWhiteSpace(serieData.TvdbId)) {
-#if __EMBY__
-            result.Item.SetProviderId("Tvdb", serieData.TvdbId);
-#else
-            result.Item.SetProviderId(MetadataProvider.Tvdb, serieData.TvdbId);
-#endif
-        }
 
         if (serieData.RatingValue.HasValue)
         {
